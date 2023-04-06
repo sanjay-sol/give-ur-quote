@@ -135,4 +135,52 @@ router.put('/comment',middleware,async (req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
+
+router.delete('/deletepost/:postId',middleware,async(req,res)=>{
+    try {
+
+        // await Post.findOne({_id:req.params.postId})
+        // .populate("postedBy","_id")
+        // .then((err,post)=>{
+        //     if(err || !post){
+        //         return res.status(400).json({err:"Error while deleteing Posts.."})  
+        //     }
+        //     if(postedBy._id.toString() === req.user._id.toString()){
+        //         post.remove()
+        //         .then(updated=> res.json(updated) )
+        //         .catch(err=> console.log(err,"errron in "))
+        //     }
+        // })
+       await Post.findByIdAndDelete({_id:req.params.postId})
+    //    await Post.find()
+    //     .populate("postedBy","_id name")
+    //     .populate("comments.postedBy","_id name")
+    //     .then(posts => {
+    //         console.log({posts})
+    //     })
+    //     .catch(err => {
+    //         console.log(err, "error in deleting posts..");
+    //     })
+    //     .populate("postedBy","_id")
+    //     await Post.find()
+    //     .populate("postedBy","_id name")
+    //     .populate("comments.postedBy","_id name")
+    //     .then(posts => {
+    //         res.json(posts)
+    //     })
+    //     .then(console.log(posts))
+    //    await updated.remove();
+    //     if(postedBy._id.toString() === req.user._id.toString()){
+    //         Post.remove()
+    //         .then(res.json(updated))
+    //         .catch(err=>{
+    //             console.log(err,"error in delete post");
+    //         })
+    //     }
+        
+    } catch (error) {
+        console.log(error,"Error in Getting my post..");
+        return res.status(400).json({error:"Error while deleting Posts.."})
+    }
+})
 module.exports = router;

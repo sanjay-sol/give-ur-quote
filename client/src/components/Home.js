@@ -104,6 +104,21 @@ const makeComment = async(text,postId)=>{
       })
       .catch(err=>console.log(err))
 }
+const deletePost = async(postid)=>{
+  await fetch(`http://localhost:3002/deletepost/${postid}`,{
+    method:"delete",
+    headers: {
+        "Content-Type": "application/json",
+      "Authorization": "Bearer "+localStorage.getItem("jwt"),
+    }
+  })
+  .then(alert("Post Deleted Secceesfully !!"))
+  .then(window.location.reload())
+  // .then(result=>console.log(result))
+  .catch((err) => console.log(err));
+  
+}
+
 
 //   console.log(data1);
   const localid = localStorage.getItem("_id");
@@ -185,8 +200,10 @@ const makeComment = async(text,postId)=>{
                 likePost(item._id)
             }}>Like</button> 
             }
-                
-              
+                <br />
+              {item.postedBy._id === localid &&
+              <button onClick={()=> deletePost(item._id)} >delete </button> 
+            }
                 
 
                 <li>Likes : {item.likes.length}</li>
