@@ -28,9 +28,15 @@ router.get('/allposts',middleware, async(req,res)=>{
 router.post('/createpost',middleware, async(req,res)=>{
     try {
         const {versionid,publicid,format,branch,quote} = req.body;
+        // const exist = Post.find()
         if(!quote || !branch){
             return res.status(422).json({message:"Please fill all fields.."})
         }
+        // if(exist){
+        //     // return res.status(422).json({message:"Quote Already exist.."})
+        //     console.log(exist.quote);
+
+        // }
         // req.user.password = undefined
         const post = new Post({
            versionid,
@@ -139,48 +145,31 @@ router.put('/comment',middleware,async (req,res)=>{
 router.delete('/deletepost/:postId',middleware,async(req,res)=>{
     try {
 
-        // await Post.findOne({_id:req.params.postId})
-        // .populate("postedBy","_id")
-        // .then((err,post)=>{
-        //     if(err || !post){
-        //         return res.status(400).json({err:"Error while deleteing Posts.."})  
-        //     }
-        //     if(postedBy._id.toString() === req.user._id.toString()){
-        //         post.remove()
-        //         .then(updated=> res.json(updated) )
-        //         .catch(err=> console.log(err,"errron in "))
-        //     }
-        // })
+       
        await Post.findByIdAndDelete({_id:req.params.postId})
-    //    await Post.find()
-    //     .populate("postedBy","_id name")
-    //     .populate("comments.postedBy","_id name")
-    //     .then(posts => {
-    //         console.log({posts})
-    //     })
-    //     .catch(err => {
-    //         console.log(err, "error in deleting posts..");
-    //     })
-    //     .populate("postedBy","_id")
-    //     await Post.find()
-    //     .populate("postedBy","_id name")
-    //     .populate("comments.postedBy","_id name")
-    //     .then(posts => {
-    //         res.json(posts)
-    //     })
-    //     .then(console.log(posts))
-    //    await updated.remove();
-    //     if(postedBy._id.toString() === req.user._id.toString()){
-    //         Post.remove()
-    //         .then(res.json(updated))
-    //         .catch(err=>{
-    //             console.log(err,"error in delete post");
-    //         })
-    //     }
+
         
     } catch (error) {
         console.log(error,"Error in Getting my post..");
         return res.status(400).json({error:"Error while deleting Posts.."})
+    }
+})
+router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
+    try {
+        const updated= await Post.findByIdAndUpdate(req.params.id,{
+            $pull:{ comments:{_id:req.params.commentId}}
+        },{new:true})
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name")
+        res.json(updated);
+        
+//        await Post.findByIdAndDelete({_id:req.params.commentId})
+//        .catch(err=> console.log(err))
+//    console.log(req.params.commentId);
+        
+    } catch (error) {
+        console.log(error,"Error in del comments..");
+        return res.status(400).json({error:"Error while deleting comment.."})
     }
 })
 module.exports = router;

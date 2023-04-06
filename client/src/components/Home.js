@@ -12,7 +12,6 @@ const defaultProps = {};
  */
 const Home = () => {
   const [data, setdata] = useState([]);
-//   const [data1, setdata1] = useState("");
 
   useEffect(() => {
     axios
@@ -28,101 +27,120 @@ const Home = () => {
   if (!token) {
     return <Navigate to="/signin" />;
   }
-//   console.log(data);
-const likePost = (id)=>{
+  const likePost = (id) => {
     // let newpostId = {
     //     postid:id
     // };
-     fetch('http://localhost:3002/like',{
-        method:"put",
-        headers: {
-            "Content-Type": "application/json",
-          "Authorization": "Bearer "+localStorage.getItem("jwt"),
-        },body: JSON.stringify({
-            postId:id
-        })
-      }).then(res=> res.json())
-      .then(updated=>{
-        const newData = data.map(item=>{
-            if(item._id===updated._id){
-                return updated
-            }else{
-                return item
-            }
-        })
-        setdata(newData)
-      })
-      .catch(updated=>console.log(updated))
-}
-const unlikePost = async(id)=>{
-    // let newpostId = {
-    //     postid:id
-    // };
-    await fetch('http://localhost:3002/unlike',{
-        method:"put",
-        headers: {
-            "Content-Type": "application/json",
-          "Authorization": "Bearer "+localStorage.getItem("jwt"),
-        },body: JSON.stringify({
-            postId:id
-        })
-      }).then(res=> res.json())
-      .then(updated=>{
-        const newData = data.map(item=>{
-            if(item._id===updated._id){
-                return updated
-            }else{
-                return item
-            }
-        })
-        setdata(newData)
-      })
-      .catch(updated=>console.log(updated))
-}
-
-const makeComment = async(text,postId)=>{
-   await fetch('http://localhost:3002/comment',{
-        method:"put",
-        headers: {
-            "Content-Type": "application/json",
-          "Authorization": "Bearer "+localStorage.getItem("jwt"),
-        },body: JSON.stringify({
-            postId,
-            text
-        })
-      }).then(res=> res.json())
-      .then(updated=>{
-        console.log(updated)
-        const newData = data.map(item=>{
-            if(item._id===updated._id){
-                return updated
-            }else{
-                return item
-            }
-        })
-        setdata(newData)
-      })
-      .catch(err=>console.log(err))
-}
-const deletePost = async(postid)=>{
-  await fetch(`http://localhost:3002/deletepost/${postid}`,{
-    method:"delete",
-    headers: {
+    fetch("http://localhost:3002/like", {
+      method: "put",
+      headers: {
         "Content-Type": "application/json",
-      "Authorization": "Bearer "+localStorage.getItem("jwt"),
-    }
-  })
-  .then(alert("Post Deleted Secceesfully !!"))
-  .then(window.location.reload())
-  // .then(result=>console.log(result))
-  .catch((err) => console.log(err));
-  
-}
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((updated) => {
+        const newData = data.map((item) => {
+          if (item._id === updated._id) {
+            return updated;
+          } else {
+            return item;
+          }
+        });
+        setdata(newData);
+      })
+      .catch((updated) => console.log(updated));
+  };
+  const unlikePost = async (id) => {
+    // let newpostId = {
+    //     postid:id
+    // };
+    await fetch("http://localhost:3002/unlike", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((updated) => {
+        const newData = data.map((item) => {
+          if (item._id === updated._id) {
+            return updated;
+          } else {
+            return item;
+          }
+        });
+        setdata(newData);
+      })
+      .catch((updated) => console.log(updated));
+  };
 
-
-//   console.log(data1);
+  const makeComment = async (text, postId) => {
+    await fetch("http://localhost:3002/comment", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((updated) => {
+        console.log(updated);
+        const newData = data.map((item) => {
+          if (item._id === updated._id) {
+            return updated;
+          } else {
+            return item;
+          }
+        });
+        setdata(newData);
+      })
+      .catch((err) => console.log(err));
+  };
+  const deletePost = async (postid) => {
+    await fetch(`http://localhost:3002/deletepost/${postid}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then(alert("Post Deleted Secceesfully !!"))
+      .then(window.location.reload())
+      // .then(result=>console.log(result))
+      .catch((err) => console.log(err));
+  };
+  const deleteComment = async (id,commentId) => {
+    await fetch(`http://localhost:3002/deletecomment/${id}/${commentId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        id,
+        commentId
+      }),
+    })
+    .then(alert("Comment Deleted Secceesfully !!"))
+    .then(window.location.reload())
+    // .then(result=>console.log(result))
+    .catch((err) => console.log(err));
+  };
   const localid = localStorage.getItem("_id");
-
+  const localname = localStorage.getItem("name");
+// console.log(data.postedBy);
   return (
     <>
       <section className="w-full px-8 text-gray-700 bg-white">
@@ -182,49 +200,64 @@ const deletePost = async(postid)=>{
           </div>
         </div>
       </section>
-      
-      <div className="m-4">
-      {data.map((item) => {
-        return (
-            <ul key={item._id}>
-                <li >Name : {item.postedBy.name}</li>
-                <li>Name : {item._id}</li>
-                <li>url :{`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}</li>
-                <li>Branch :{item.branch}</li>
-                <li>Qoute : {item.quote}</li>
-                <li>Posted At : {item.updatedAt}</li>
-                {/* <li className="cursor-pointer " onClick={likePost(item._id)} > 👍🏻Like  </li>
-                <li  className="cursor-pointer " onClick={unlikePost(item._id)}> 👎🏻Unlike  </li> */}
-                {item.likes.includes(localid) ? 
-            <button onClick={()=>unlikePost(item._id)}>Unlike</button> : <button onClick={()=>{
-                likePost(item._id)
-            }}>Like</button> 
-            }
-                <br />
-              {item.postedBy._id === localid &&
-              <button onClick={()=> deletePost(item._id)} >delete </button> 
-            }
-                
 
-                <li>Likes : {item.likes.length}</li>
-                {item.comments.map(record=>{
-                    return (
-                        <h6 key={record._id}><span>{record.postedBy.name}</span>{record.text} </h6>
-                    )
-                })}
-                <form onSubmit={(e)=>{
-                    e.preventDefault()
-                    makeComment(e.target[0].value,item._id)
-                }}>
-                    <input type="text" placeholder="add comment" />
-                </form>
-                {/* <li>Qoute : {item.quote}</li> */}
-                <li>----------------------------------------------------------------</li>
+      <div className="m-4">
+        {data.map((item) => {
+          return (
+            <ul key={item._id}>
+              <li>Name : {item.postedBy.name}</li>
+              <li>Name : {item._id}</li>
+              <li>
+                url :
+                {`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}
+              </li>
+              <li>Branch :{item.branch}</li>
+              <li>Qoute : {item.quote}</li>
+              <li>Posted At : {item.updatedAt}</li>
+              {/* <li className="cursor-pointer " onClick={likePost(item._id)} > 👍🏻Like  </li>
+                <li  className="cursor-pointer " onClick={unlikePost(item._id)}> 👎🏻Unlike  </li> */}
+              {item.likes.includes(localid) ? (
+                <button onClick={() => unlikePost(item._id)}>Unlike</button>
+              ) : (
+                <button
+                  onClick={() => {
+                    likePost(item._id);
+                  }}
+                >
+                  Like
+                </button>
+              )}
+              <br />
+              {item.postedBy._id === localid && (
+                <button onClick={() => deletePost(item._id)}>delete </button>
+              )}
+
+              <li>Likes : {item.likes.length}</li>
+              {item.comments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span>{record.postedBy.name}</span>
+                    {record.text}{record._id}
+                    { record.postedBy.name ===localname && <button onClick={() => deleteComment(item._id,record._id)}>:::del</button> }
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  makeComment(e.target[0].value, item._id);
+                }}
+              >
+                <input type="text" placeholder="add comment" />
+              </form>
+              {/* <li>Qoute : {item.quote}</li> */}
+              <li>
+                ----------------------------------------------------------------
+              </li>
             </ul>
-        );
-      })}
+          );
+        })}
       </div>
-      
     </>
   );
 };
