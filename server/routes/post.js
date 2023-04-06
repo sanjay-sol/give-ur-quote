@@ -9,6 +9,7 @@ router.get('/allposts',middleware, async(req,res)=>{
     try {
         await Post.find()
         .populate("postedBy","_id name")
+        .populate("comments.postedBy","_id name")
         .then(posts => {
             res.json({posts})
         })
@@ -75,6 +76,8 @@ router.put('/like',middleware,async (req,res)=>{
        const updated= await Post.findByIdAndUpdate(req.body.postId,{
             $push:{ likes:req.user._id}
         },{new:true})
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name")
         res.json(updated);
         // .populate("postedBy","_id name")
         // .then(result=>{
@@ -96,7 +99,36 @@ router.put('/unlike',middleware,async (req,res)=>{
         const updated= await Post.findByIdAndUpdate(req.body.postId,{
             $pull:{ likes:req.user._id}
         },{new:true})
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name")
         res.json(updated);
+        
+    } catch (err) {
+        console.log(err,"Error in Getting my post..");
+        return res.status(400).json({error:"Error while fetching MyPosts.."})
+    }
+})
+
+
+router.put('/comment',middleware,async (req,res)=>{
+    try {
+        const comment = {
+            text:req.body.text,
+            postedBy:req.user._id
+        }
+       const updated= await Post.findByIdAndUpdate(req.body.postId,{
+            $push:{comments:comment}
+        },{new:true})
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name")
+        res.json(updated);
+        // .populate("postedBy","_id name")
+        // .then(result=>{
+        //    res.json(result)
+        //    console.log(result)
+        // }).catch(err=>{
+        //     res.status(422).json({message:err})
+        // })
         
     } catch (err) {
         console.log(err,"Error in Getting my post..");

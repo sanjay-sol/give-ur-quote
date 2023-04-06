@@ -79,6 +79,32 @@ const unlikePost = async(id)=>{
       })
       .catch(updated=>console.log(updated))
 }
+
+const makeComment = async(text,postId)=>{
+   await fetch('http://localhost:3002/comment',{
+        method:"put",
+        headers: {
+            "Content-Type": "application/json",
+          "Authorization": "Bearer "+localStorage.getItem("jwt"),
+        },body: JSON.stringify({
+            postId,
+            text
+        })
+      }).then(res=> res.json())
+      .then(updated=>{
+        console.log(updated)
+        const newData = data.map(item=>{
+            if(item._id===updated._id){
+                return updated
+            }else{
+                return item
+            }
+        })
+        setdata(newData)
+      })
+      .catch(err=>console.log(err))
+}
+
 //   console.log(data1);
   const localid = localStorage.getItem("_id");
 
@@ -145,8 +171,8 @@ const unlikePost = async(id)=>{
       <div className="m-4">
       {data.map((item) => {
         return (
-            <ul>
-                <li>Name : {item.postedBy.name}</li>
+            <ul key={item._id}>
+                <li >Name : {item.postedBy.name}</li>
                 <li>Name : {item._id}</li>
                 <li>url :{`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}</li>
                 <li>Branch :{item.branch}</li>
@@ -164,6 +190,17 @@ const unlikePost = async(id)=>{
                 
 
                 <li>Likes : {item.likes.length}</li>
+                {item.comments.map(record=>{
+                    return (
+                        <h6 key={record._id}><span>{record.postedBy.name}</span>{record.text} </h6>
+                    )
+                })}
+                <form onSubmit={(e)=>{
+                    e.preventDefault()
+                    makeComment(e.target[0].value,item._id)
+                }}>
+                    <input type="text" placeholder="add comment" />
+                </form>
                 {/* <li>Qoute : {item.quote}</li> */}
                 <li>----------------------------------------------------------------</li>
             </ul>
