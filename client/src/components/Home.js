@@ -108,6 +108,32 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
+  const makepComment = async (text, postId) => {
+    await fetch("http://localhost:3002/pcomment", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((updated) => {
+        console.log(updated);
+        const newData = data.map((item) => {
+          if (item._id === updated._id) {
+            return updated;
+          } else {
+            return item;
+          }
+        });
+        setdata(newData);
+      })
+      .catch((err) => console.log(err));
+  };
   const deletePost = async (postid) => {
     await fetch(`http://localhost:3002/deletepost/${postid}`, {
       method: "delete",
@@ -233,11 +259,13 @@ const Home = () => {
               )}
 
               <li>Likes : {item.likes.length}</li>
+              <strong>Comments :</strong>
+              <li>------</li>
               {item.comments.map((record) => {
                 return (
                   <h6 key={record._id}>
                     <span>{record.postedBy.name}</span>
-                    {record.text}{record._id}
+                    {record.text}
                     { record.postedBy.name ===localname && <button onClick={() => deleteComment(item._id,record._id)}>:::del</button> }
                   </h6>
                 );
@@ -250,6 +278,25 @@ const Home = () => {
               >
                 <input type="text" placeholder="add comment" />
               </form>
+              <strong> Anonymous comments</strong>
+              {item.pcomments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span>{record.postedBy.name}</span>
+                    {record.text}
+                    { record.postedBy.name ===localname && <button onClick={() => deleteComment(item._id,record._id)}>:::del</button> }
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  makepComment(e.target[0].value, item._id);
+                }}
+              >
+                <input type="text" placeholder="add anonymous comments" />
+              </form>
+              <li>--------</li>
               {/* <li>Qoute : {item.quote}</li> */}
               <li>
                 ----------------------------------------------------------------

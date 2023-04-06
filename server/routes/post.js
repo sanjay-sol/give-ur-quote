@@ -24,7 +24,6 @@ router.get('/allposts',middleware, async(req,res)=>{
     }
 })
 
-
 router.post('/createpost',middleware, async(req,res)=>{
     try {
         const {versionid,publicid,format,branch,quote} = req.body;
@@ -99,7 +98,6 @@ router.put('/like',middleware,async (req,res)=>{
     }
 })
 
-
 router.put('/unlike',middleware,async (req,res)=>{
     try {
         const updated= await Post.findByIdAndUpdate(req.body.postId,{
@@ -114,7 +112,6 @@ router.put('/unlike',middleware,async (req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
-
 
 router.put('/comment',middleware,async (req,res)=>{
     try {
@@ -141,6 +138,31 @@ router.put('/comment',middleware,async (req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
+router.put('/pcomment',middleware,async (req,res)=>{
+    try {
+        const comment = {
+            text:req.body.text,
+            postedBy:req.user._id
+        }
+       const updated= await Post.findByIdAndUpdate(req.body.postId,{
+            $push:{pcomments:comment}
+        },{new:true})
+        .populate("comments.postedBy","_id name")
+        .populate("postedBy","_id name")
+        res.json(updated);
+        // .populate("postedBy","_id name")
+        // .then(result=>{
+        //    res.json(result)
+        //    console.log(result)
+        // }).catch(err=>{
+        //     res.status(422).json({message:err})
+        // })
+        
+    } catch (err) {
+        console.log(err,"Error in pcomments..");
+        return res.status(400).json({error:"Error in pcomments.."})
+    }
+})
 
 router.delete('/deletepost/:postId',middleware,async(req,res)=>{
     try {
@@ -154,6 +176,7 @@ router.delete('/deletepost/:postId',middleware,async(req,res)=>{
         return res.status(400).json({error:"Error while deleting Posts.."})
     }
 })
+
 router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
     try {
         const updated= await Post.findByIdAndUpdate(req.params.id,{
@@ -172,4 +195,5 @@ router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
         return res.status(400).json({error:"Error while deleting comment.."})
     }
 })
+
 module.exports = router;

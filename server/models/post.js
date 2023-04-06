@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema({
         text:String,
         postedBy:{type:ObjectId,ref:"User"}
     }],
+    pcomments:[{
+        text:String,
+        postedBy:{type:ObjectId,ref:"User"}
+    }],
     postedBy:{
         type: ObjectId,
         ref:"User"
