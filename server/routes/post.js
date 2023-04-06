@@ -5,7 +5,7 @@ const middleware = require("../middleware/middleware");
 const Post = mongoose.model("Post")
 
 
-router.get('/allposts', async(req,res)=>{
+router.get('/allposts',middleware, async(req,res)=>{
     try {
         await Post.find()
         .populate("postedBy","_id name")
@@ -65,9 +65,42 @@ router.get('/myposts',middleware, async(req,res)=>{
         })
         
     } catch (error) {
+        console.log(error,"Error in Getting my post..");
+        return res.status(400).json({error:"Error while fetching MyPosts.."})
+    }
+})
+
+router.put('/like',middleware,async (req,res)=>{
+    try {
+       const updated= await Post.findByIdAndUpdate(req.body.postId,{
+            $push:{ likes:req.user._id}
+        },{new:true})
+        res.json(updated);
+        // .populate("postedBy","_id name")
+        // .then(result=>{
+        //    res.json(result)
+        //    console.log(result)
+        // }).catch(err=>{
+        //     res.status(422).json({message:err})
+        // })
+        
+    } catch (err) {
         console.log(err,"Error in Getting my post..");
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
 
+
+router.put('/unlike',middleware,async (req,res)=>{
+    try {
+        const updated= await Post.findByIdAndUpdate(req.body.postId,{
+            $pull:{ likes:req.user._id}
+        },{new:true})
+        res.json(updated);
+        
+    } catch (err) {
+        console.log(err,"Error in Getting my post..");
+        return res.status(400).json({error:"Error while fetching MyPosts.."})
+    }
+})
 module.exports = router;

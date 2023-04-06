@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
+import axios from 'axios';
 // import Navbar1 from './Navbar1';
 
 const propTypes = {};
@@ -10,10 +11,25 @@ const defaultProps = {};
  * 
  */
 const Profile = () => {
+
+    const [data, setdata] = useState([]);
+
+    useEffect(() => {
+      axios
+        .get("http://localhost:3002/myposts", {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        })
+        .then((res) => setdata(res.data.mypost))
+        .catch((err) => console.log(err));
+    }, []);
+    console.log(data);
     const token = localStorage.getItem("jwt");
     if(!token){
       return <Navigate to="/signin" />;
     }
+    const localname = localStorage.getItem("name");
     return (
     <>
     <section className="w-full px-8 text-gray-700 bg-white">
@@ -50,7 +66,24 @@ const Profile = () => {
         </div>
     </div>
 </section>
-<div>Your Profile</div>
+<div className="m-4">
+    
+    <h1>Hi ,👋 {localname}</h1>
+    <li>..............</li>
+      {data.map((item) => {
+        return (
+            <ul>
+                {/* <li>Name : {item.postedBy.name}</li> */}
+                <li>url :{`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}</li>
+                <li>Branch :{item.branch}</li>
+                <li>Qoute : {item.quote}</li>
+                <li>Posted At : {item.updatedAt}</li>
+                {/* <li>Qoute : {item.quote}</li> */}
+                <li>----------------------------------------------------------------</li>
+            </ul>
+        );
+      })}
+      </div>
     </>
     );
 }

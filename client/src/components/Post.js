@@ -29,7 +29,7 @@ const Post = () => {
     var selectedvalue = document.getElementById("mySelect").value;
     setbranch(selectedvalue);
   };
-  const handlefile =async (e) => {
+  const handlefile = (e) => {
     const filename = e.target.files[0].name;
     setimagename(filename);
     const file = e.target.files[0];
@@ -37,11 +37,9 @@ const Post = () => {
     formData.append("file", file);
     formData.append("upload_preset", preset_key);
     // setloading(true);
-    await axios
-      .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-        formData
-      )
+      axios.post(
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,formData)
+      .then((res)=>console.log(res.data))
       .then((res) => setversionid1(res.data.version))
       .then((res) => setpublicid1(res.data.public_id))
       .then((res) => setformat1(res.data.format))
@@ -50,6 +48,7 @@ const Post = () => {
       // .then(() => {
       //   setloading(false);
       // })
+      
       .catch((err) => {
         console.log(err);
       });

@@ -17,10 +17,7 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-   
-    // year:{
-    //     type: String,
-    // },
+    likes:[{type: ObjectId , ref:"User"}],
     postedBy:{
         type: ObjectId,
         ref:"User"
