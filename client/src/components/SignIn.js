@@ -34,6 +34,7 @@ const SignIn = () => {
             localStorage.setItem("_id", res.data._id);
             localStorage.setItem("email", res.data.email);
             localStorage.setItem("name", res.data.name);
+            localStorage.setItem("pic", res.data.pic);
             setauth(true)
         })
         .catch(err=> alert(err.response.data.message))

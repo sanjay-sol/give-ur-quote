@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password , pic} = req.body;
 
     const exist = await User.findOne({ email });
     const exist1 = await User.findOne({ name });
@@ -49,6 +49,7 @@ router.post("/signup", async (req, res) => {
         name,
       email,
       password,
+      pic
     });
     await user.save();
     res.status(200).json({ message: "Registerd Successfully !!" });
@@ -75,7 +76,7 @@ router.post("/signin", async(req,res) => {
 
           const token = jwt.sign({_id:exist._id},process.env.JWT_SECRET)
    
-          res.json({token,_id:exist._id,email:exist.email,name:exist.name})
+          res.json({token,_id:exist._id,email:exist.email,name:exist.name,pic:exist.pic})
 
     } catch (error) {
         console.log("error in register", error);

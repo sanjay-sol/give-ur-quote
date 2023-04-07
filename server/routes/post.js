@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const middleware = require("../middleware/middleware");
 const Post = mongoose.model("Post")
 
+/*****************  ALL POSTS  ********************************************  */
 
 router.get('/allposts',middleware, async(req,res)=>{
     try {
@@ -24,9 +25,11 @@ router.get('/allposts',middleware, async(req,res)=>{
     }
 })
 
+/*****************  CREATE POST  ********************************************  */
+
 router.post('/createpost',middleware, async(req,res)=>{
     try {
-        const {versionid,publicid,format,branch,quote} = req.body;
+        const {url,branch,quote} = req.body;
         // const exist = Post.find()
         if(!quote || !branch){
             return res.status(422).json({message:"Please fill all fields.."})
@@ -38,9 +41,7 @@ router.post('/createpost',middleware, async(req,res)=>{
         // }
         // req.user.password = undefined
         const post = new Post({
-           versionid,
-           publicid,
-           format,
+           url,
            branch,
             quote,
             postedBy:req.user
@@ -60,6 +61,8 @@ router.post('/createpost',middleware, async(req,res)=>{
     }
 })
 
+/*****************  MY POSTS  ********************************************  */
+
 router.get('/myposts',middleware, async(req,res)=>{
     try {
         await Post.find({postedBy:req.user._id})
@@ -75,6 +78,8 @@ router.get('/myposts',middleware, async(req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
+
+/***************** LIKES  ********************************************  */
 
 router.put('/like',middleware,async (req,res)=>{
     try {
@@ -98,6 +103,8 @@ router.put('/like',middleware,async (req,res)=>{
     }
 })
 
+/*****************  UNLIKE  ********************************************  */
+
 router.put('/unlike',middleware,async (req,res)=>{
     try {
         const updated= await Post.findByIdAndUpdate(req.body.postId,{
@@ -112,6 +119,8 @@ router.put('/unlike',middleware,async (req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
+
+/*****************  COMMENT  ********************************************  */
 
 router.put('/comment',middleware,async (req,res)=>{
     try {
@@ -138,6 +147,9 @@ router.put('/comment',middleware,async (req,res)=>{
         return res.status(400).json({error:"Error while fetching MyPosts.."})
     }
 })
+
+/*****************  ANONYMOUS COMMENTS  ********************************************  */
+
 router.put('/pcomment',middleware,async (req,res)=>{
     try {
         const comment = {
@@ -164,6 +176,8 @@ router.put('/pcomment',middleware,async (req,res)=>{
     }
 })
 
+/*****************  DELETE POST  ********************************************  */
+
 router.delete('/deletepost/:postId',middleware,async(req,res)=>{
     try {
 
@@ -176,6 +190,8 @@ router.delete('/deletepost/:postId',middleware,async(req,res)=>{
         return res.status(400).json({error:"Error while deleting Posts.."})
     }
 })
+
+/*****************  DELETE COMMENT  ********************************************  */
 
 router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
     try {
@@ -195,5 +211,7 @@ router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
         return res.status(400).json({error:"Error while deleting comment.."})
     }
 })
+
+
 
 module.exports = router;

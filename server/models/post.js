@@ -1,17 +1,12 @@
 const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
-    versionid:{
+    url:{
         type: String,
     },
-    publicid:{
-        type: String,
-    },
-    format:{
-        type: String,
-    }, 
     branch:{
         type: String,
+        default: "-",
     },
      quote:{
         type: String,

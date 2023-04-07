@@ -232,10 +232,10 @@ const Home = () => {
           return (
             <ul key={item._id}>
               <li>Name : {item.postedBy.name}</li>
-              <li>Name : {item._id}</li>
+              {/* <li>Name : {item._id}</li> */}
               <li>
                 url :
-                {`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}
+                {`${item.url}`}
               </li>
               <li>Branch :{item.branch}</li>
               <li>Qoute : {item.quote}</li>

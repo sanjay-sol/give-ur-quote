@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {  Navigate } from "react-router-dom";
 import axios from "axios";
-import data from "./cloud.json";
+// import data from "./cloud.json";
 import Navbar1 from "./Navbar1";
 
 // import { Link } from 'react-router-dom';
@@ -14,35 +14,36 @@ const defaultProps = {};
  *
  */
 const Post = () => {
-  const randomnumber = (Math.random() * 10).toFixed(0);
+  // const randomnumber = (Math.random() * 10).toFixed(0);
   const preset_key = "x5orflhb";
   const cloud_name = "dgo3xjjvb";
-  const [versionid1, setversionid1] = useState(data[randomnumber].versionid1);
-  const [publicid1, setpublicid1] = useState(data[randomnumber].publicid1);
-  const [format1, setformat1] = useState(data[randomnumber].format);
+  const [url1, seturl1] = useState("");
+  // const [publicid1, setpublicid1] = useState(data[randomnumber].publicid1);
+  // const [format1, setformat1] = useState(data[randomnumber].format);
   const [quote, setquote] = useState("");
   const [branch, setbranch] = useState("");
   const [imagename, setimagename] = useState("DROP YOUR IMAGE");
   const [auth, setauth] = useState(false);
+  // const [url, seturl] = useState("");
 
   const getValue = () => {
     var selectedvalue = document.getElementById("mySelect").value;
     setbranch(selectedvalue);
   };
   const handlefile = (e) => {
-    const filename = e.target.files[0].name;
-    setimagename(filename);
     const file = e.target.files[0];
+    setimagename(e.target.files[0].name)
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", preset_key);
-    // setloading(true);
-      axios.post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,formData)
-      .then((res)=>console.log(res.data))
-      .then((res) => setversionid1(res.data.version))
-      .then((res) => setpublicid1(res.data.public_id))
-      .then((res) => setformat1(res.data.format))
+    axios
+      .post(
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+        formData
+      )
+      .then((res) => seturl1(res.data.secure_url))
+      // .then((res) => setpublicid1(res.data.public_id))
+
     //   .then((res) => console.log(res.data))
 
       // .then(() => {
@@ -53,12 +54,14 @@ const Post = () => {
         console.log(err);
       });
   };
+  // setversionid1(url.version);
+  // setpublicid1(url.public_id);
+  // setformat1(url.format);
+  // console.log(url);
   
   const handleSubmit =async()=>{
     let post = {
-        versionid:versionid1,
-        publicid:publicid1,
-        format:format1,
+        url:url1,
         branch:branch,
         quote:quote,
     } ;
@@ -124,6 +127,7 @@ const Post = () => {
                           <input
                             className="text-sm cursor-pointer w-36 hidden"
                             type="file"
+                            name="file"
                             onChange={handlefile}
                           />
                           <div className="text bg-indigo-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-indigo-500">
@@ -159,7 +163,7 @@ const Post = () => {
                   <option value="CS-IT">CSIT</option>
                   <option value="CS">CS</option>
                   <option value="CS">IT</option>
-                  <option value="OTHERS">Others</option>
+                  <option value="NA">Others</option>
                 </select>
                 <textarea
                   type="text"

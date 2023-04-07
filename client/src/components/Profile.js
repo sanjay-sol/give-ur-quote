@@ -30,6 +30,7 @@ const Profile = () => {
       return <Navigate to="/signin" />;
     }
     const localname = localStorage.getItem("name");
+    const localpic = localStorage.getItem("pic");
     return (
     <>
     <section className="w-full px-8 text-gray-700 bg-white">
@@ -69,12 +70,13 @@ const Profile = () => {
 <div className="m-4">
     
     <h1>Hi ,👋 {localname}</h1>
+    <h1>Hi ,👋 {localpic}</h1>
     <li>..............</li>
       {data.map((item) => {
         return (
             <ul>
                 {/* <li>Name : {item.postedBy.name}</li> */}
-                <li>url :{`https://res.cloudinary.com/dgo3xjjvb/image/upload/v${item.versionid}/${item.publicid}.${item.format}`}</li>
+                <li>url :{`${item.url}`}</li>
                 <li>Branch :{item.branch}</li>
                 <li>Qoute : {item.quote}</li>
                 <li>Posted At : {item.updatedAt}</li>
