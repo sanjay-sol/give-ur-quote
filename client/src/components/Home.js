@@ -231,12 +231,14 @@ const Home = () => {
         {data.map((item) => {
           return (
             <ul key={item._id}>
-              <li>Name : {item.postedBy.name}</li>
+              <li>Name : <strong>{item.postedBy.name}</strong> </li>
               {/* <li>prof url : {item.postedBy.pic}</li> */}
               {/* <li>Name : {item._id}</li> */}
+              <li>User prof : <strong> {item.pic}</strong></li>
+
               <li>
-                url :
-                {`${item.url}`}
+                cover url : <strong>{`${item.url}`}</strong>
+                
               </li>
               <li>Branch :{item.branch}</li>
               <li>Qoute : {item.quote}</li>

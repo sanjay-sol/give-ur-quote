@@ -30,7 +30,7 @@ router.get('/allposts',middleware, async(req,res)=>{
 
 router.post('/createpost',middleware, async(req,res)=>{
     try {
-        const {url,branch,quote} = req.body;
+        const {url,pic,branch,quote} = req.body;
         // const exist = Post.find()
         if(!quote || !branch){
             return res.status(422).json({message:"Please fill all fields.."})
@@ -43,6 +43,7 @@ router.post('/createpost',middleware, async(req,res)=>{
         // req.user.password = undefined
         const post = new Post({
            url,
+           pic,
            branch,
             quote,
             postedBy:req.user
@@ -213,6 +214,8 @@ router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
     }
 })
 
+/*****************  UPDATE PROFILE  ********************************************  */
+
 router.put('/updateprofile/:id',async(req,res)=>{
     
     
@@ -229,6 +232,8 @@ router.put('/updateprofile/:id',async(req,res)=>{
 
   }
 })
+
+/*****************  MY PROFILE  ********************************************  */
 
 router.get('/myprofile/:id',middleware,async(req,res)=>{
     try {

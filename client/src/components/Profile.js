@@ -69,7 +69,11 @@ const Profile = () => {
             Authorization: localStorage.getItem("jwt"),
           },
         })
-        .then((res) => setprofpic(res.data.pic))
+        .then((res) => {
+          setprofpic(res.data.pic)
+          localStorage.setItem("pic",res.data.pic)
+        })
+        // .then((res)=>localStorage.setItem("pic",res.data.pic))
         .catch((err) => console.log(err));
     });
     useEffect(() => {
@@ -82,8 +86,8 @@ const Profile = () => {
         .then((res) => setdata(res.data.mypost))
         .catch((err) => console.log(err));
     }, []);
-    console.log(data);
-    console.log("new url is ",url1);
+    // console.log(data);
+    // console.log("new url is ",url1);
 
 
 
@@ -132,17 +136,17 @@ const Profile = () => {
 </section>
 <div className="m-4">
     
-    <h1>Hi ,👋 {localname}</h1>
-    <h1>Prof oic:  {profpic}</h1>
+    <h1>Hi <strong>👋 {localname}</strong> </h1>
+    <h1>Prof oic: <strong> {profpic}</strong> </h1>
     <input type="file" name="file" onChange={handlefile} />
     <br />
-    <button onClick={updateprofile} >Update</button>
+    <button onClick={updateprofile} > <strong>Update</strong> </button>
     {/* <span>{imagename}</span> */}
     {/* <h1>Hi ,👋 {localpic}</h1> */}
     <li>..............</li>
       {data.map((item) => {
         return (
-            <ul>
+            <ul key={item._id} >
                 {/* <li>Name : {item.postedBy.name}</li> */}
                 <li>url :{`${item.url}`}</li>
                 <li>Branch :{item.branch}</li>

@@ -25,7 +25,7 @@ const Post = () => {
   const [imagename, setimagename] = useState("DROP YOUR IMAGE");
   const [auth, setauth] = useState(false);
   // const [url, seturl] = useState("");
-
+  const localpic = localStorage.getItem("pic");
   const getValue = () => {
     var selectedvalue = document.getElementById("mySelect").value;
     setbranch(selectedvalue);
@@ -62,18 +62,19 @@ const Post = () => {
   const handleSubmit =async()=>{
     let post = {
         url:url1,
+        pic:localpic,
         branch:branch,
         quote:quote,
     } ;
     const token = "Bearer "+localStorage.getItem("jwt")
-    console.log(token);
+    // console.log(token);
     await axios.post('http://localhost:3002/createpost', post,{
         headers: {
           "Authorization": token,
         },
       })
     .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         alert("Posted Successfully")
         setauth(true)
     })

@@ -4,6 +4,9 @@ const postSchema = new mongoose.Schema({
     url:{
         type: String,
     },
+    pic:{
+        type: String,
+    },
     branch:{
         type: String,
         default: "-",
