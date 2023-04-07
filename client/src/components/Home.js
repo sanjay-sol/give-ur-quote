@@ -240,7 +240,8 @@ const Home = () => {
               </li>
               <li>Branch :{item.branch}</li>
               <li>Qoute : {item.quote}</li>
-              <li>Posted At : {item.updatedAt}</li>
+              <li>Created At : {item.createdAt}</li>
+              <li>Updated At : {item.updatedAt}</li>
               {/* <li className="cursor-pointer " onClick={likePost(item._id)} > 👍🏻Like  </li>
                 <li  className="cursor-pointer " onClick={unlikePost(item._id)}> 👎🏻Unlike  </li> */}
               {item.likes.includes(localid) ? (
