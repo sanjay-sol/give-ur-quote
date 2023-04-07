@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 // import Navbar1 from './Navbar1';
 
@@ -11,9 +11,67 @@ const defaultProps = {};
  * 
  */
 const Profile = () => {
-
+  const params = useParams();
     const [data, setdata] = useState([]);
+    const [profpic, setprofpic] = useState("");
+    const preset_key = "x5orflhb";
+  const cloud_name = "dgo3xjjvb";
+  const [url1, seturl1] = useState("");
+  // const [imagename, setimagename] = useState("DROP YOUR IMAGE");
 
+  const handlefile = (e) => {
+    const file = e.target.files[0];
+    // setimagename(e.target.files[0].name)
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", preset_key);
+    axios
+      .post(
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+        formData
+      )
+      .then((res) => seturl1(res.data.secure_url))
+      // .then((res) => setpublicid1(res.data.public_id))
+
+    //   .then((res) => console.log(res.data))
+
+      // .then(() => {
+      //   setloading(false);
+      // })
+      
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
+
+  const updateprofile = async () => {
+    await fetch(`http://localhost:3002/updateprofile/${params.id}`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        pic:url1
+      }),
+    })
+      .then(alert("Updated Secceesfully !!"))
+      .then(window.location.reload())
+      // .then(result=>console.log(result))
+      .catch((err) => console.log(err));
+  };
+
+    useEffect(() => {
+      axios
+        .get(`http://localhost:3002/myprofile/${params.id}`, {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        })
+        .then((res) => setprofpic(res.data.pic))
+        .catch((err) => console.log(err));
+    });
     useEffect(() => {
       axios
         .get("http://localhost:3002/myposts", {
@@ -25,12 +83,17 @@ const Profile = () => {
         .catch((err) => console.log(err));
     }, []);
     console.log(data);
+    console.log("new url is ",url1);
+
+
+
+
     const token = localStorage.getItem("jwt");
     if(!token){
       return <Navigate to="/signin" />;
     }
     const localname = localStorage.getItem("name");
-    const localpic = localStorage.getItem("pic");
+    // const localpic = localStorage.getItem("pic");
     return (
     <>
     <section className="w-full px-8 text-gray-700 bg-white">
@@ -70,7 +133,12 @@ const Profile = () => {
 <div className="m-4">
     
     <h1>Hi ,👋 {localname}</h1>
-    <h1>Hi ,👋 {localpic}</h1>
+    <h1>Prof oic:  {profpic}</h1>
+    <input type="file" name="file" onChange={handlefile} />
+    <br />
+    <button onClick={updateprofile} >Update</button>
+    {/* <span>{imagename}</span> */}
+    {/* <h1>Hi ,👋 {localpic}</h1> */}
     <li>..............</li>
       {data.map((item) => {
         return (

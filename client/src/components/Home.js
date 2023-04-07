@@ -190,7 +190,7 @@ const Home = () => {
               {/* <Link to="/" className="mr-6 font-medium leading-6 text-gray-600 hover:text-gray-900">Home</Link> */}
 
               <Link
-                to="/profile"
+                to={`/profile/${localid}`}
                 className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900"
               >
                 My Profile
@@ -232,6 +232,7 @@ const Home = () => {
           return (
             <ul key={item._id}>
               <li>Name : {item.postedBy.name}</li>
+              {/* <li>prof url : {item.postedBy.pic}</li> */}
               {/* <li>Name : {item._id}</li> */}
               <li>
                 url :

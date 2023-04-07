@@ -13,6 +13,7 @@ const Navbar1 = () => {
     //     setitem(localStorage.getItem("jwt"))
     // },[])
     // const token = localStorage.getItem("jwt");
+  const localid = localStorage.getItem("_id");
     
 
     return (
@@ -30,7 +31,7 @@ const Navbar1 = () => {
                {/* <Link to="/" className="mr-6 font-medium leading-6 text-gray-600 hover:text-gray-900">Home</Link> */}
                
                
-                <Link to="/profile" className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">My Profile</Link>
+                <Link to={`/profile/${localid}`} className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">My Profile</Link>
 
            
             

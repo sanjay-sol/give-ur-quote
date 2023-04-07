@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const middleware = require("../middleware/middleware");
 const Post = mongoose.model("Post")
+const User = mongoose.model("User")
 
 /*****************  ALL POSTS  ********************************************  */
 
@@ -212,6 +213,37 @@ router.delete('/deletecomment/:id/:commentId',middleware,async(req,res)=>{
     }
 })
 
+router.put('/updateprofile/:id',async(req,res)=>{
+    
+    
+    try {
+        const { pic} = req.body;
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {pic: pic},
+        {new: true}, // "new: true" or "returnOriginal: false"
+      );
+      res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(422).json({error:"error in update prof"});
 
+  }
+})
+
+router.get('/myprofile/:id',middleware,async(req,res)=>{
+    try {
+      const userdetails =  await User.findById(req.params.id)
+        // .populate("postedBy","_id name")
+        // .populate("comments.postedBy","_id name")
+        // .then(userdetails => {
+        //     res.json({userdetails})
+        // })
+        res.send(userdetails)
+    } catch (error) {
+        console.log(error,"Error in creating post..");
+        return res.status(400).json({error:"Error while fetching myprofile.."})
+
+    }
+})
 
 module.exports = router;
