@@ -68,3 +68,107 @@
      
       
         </div> */}
+
+
+
+
+
+## first logic
+
+<div className="m-4">
+        {data.map((item) => {
+          return (
+            <ul key={item._id}>
+              <li>
+                Name : <strong>{item.postedBy.name}</strong>{" "}
+              </li>
+              {/* <li>prof url : {item.postedBy.pic}</li> */}
+              {/* <li>Name : {item._id}</li> */}
+              <li>
+                User prof : <strong> {item.pic}</strong>
+              </li>
+
+              <li>
+                cover url : <strong>{`${item.url}`}</strong>
+              </li>
+              <li>Branch :{item.branch}</li>
+              <li>Qoute : {item.quote}</li>
+              <li>Created At : {item.createdAt}</li>
+              <li>Updated At : {item.updatedAt}</li>
+              {/* <li className="cursor-pointer " onClick={likePost(item._id)} > 👍🏻Like  </li>
+                <li  className="cursor-pointer " onClick={unlikePost(item._id)}> 👎🏻Unlike  </li> */}
+              {item.likes.includes(localid) ? (
+                <button onClick={() => unlikePost(item._id)}>Unlike</button>
+              ) : (
+                <button
+                  onClick={() => {
+                    likePost(item._id);
+                  }}
+                >
+                  Like
+                </button>
+              )}
+              <br />
+              {item.postedBy._id === localid && (
+                <button onClick={() => deletePost(item._id)}>delete </button>
+              )}
+
+              <li>Likes : {item.likes.length}</li>
+              <strong>Comments :</strong>
+              <li>------</li>
+              {item.comments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span>{record.postedBy.name}</span>
+                    {record.text}
+                    {record.postedBy.name === localname && (
+                      <button
+                        onClick={() => deleteComment(item._id, record._id)}
+                      >
+                        :::del
+                      </button>
+                    )}
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  makeComment(e.target[0].value, item._id);
+                }}
+              >
+                <input type="text" placeholder="add comment" />
+              </form>
+              <strong> Anonymous comments</strong>
+              {item.pcomments.map((record) => {
+                return (
+                  <h6 key={record._id}>
+                    <span>{record.postedBy.name}</span>
+                    {record.text}
+                    {record.postedBy.name === localname && (
+                      <button
+                        onClick={() => deleteComment(item._id, record._id)}
+                      >
+                        :::del
+                      </button>
+                    )}
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  makepComment(e.target[0].value, item._id);
+                }}
+              >
+                <input type="text" placeholder="add anonymous comments" />
+              </form>
+              <li>--------</li>
+              {/* <li>Qoute : {item.quote}</li> */}
+              <li>
+                ----------------------------------------------------------------
+              </li>
+            </ul>
+          );
+        })}
+      </div>

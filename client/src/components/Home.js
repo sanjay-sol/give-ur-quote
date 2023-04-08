@@ -108,32 +108,34 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
-  const makepComment = async (text, postId) => {
-    await fetch("http://localhost:3002/pcomment", {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("jwt"),
-      },
-      body: JSON.stringify({
-        postId,
-        text,
-      }),
-    })
-      .then((res) => res.json())
-      .then((updated) => {
-        console.log(updated);
-        const newData = data.map((item) => {
-          if (item._id === updated._id) {
-            return updated;
-          } else {
-            return item;
-          }
-        });
-        setdata(newData);
-      })
-      .catch((err) => console.log(err));
-  };
+  // const makepComment = async (text, postId) => {
+  //   await fetch("http://localhost:3002/pcomment", {
+  //     method: "put",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + localStorage.getItem("jwt"),
+  //     },
+  //     body: JSON.stringify({
+  //       postId,
+  //       text,
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((updated) => {
+  //       console.log(updated);
+  //       const newData = data.map((item) => {
+  //         if (item._id === updated._id) {
+  //           return updated;
+  //         } else {
+  //           return item;
+  //         }
+  //       });
+  //       setdata(newData);
+  //     })
+  //     .catch((err) => console.log(err));
+  // };
+  
+  
   const deletePost = async (postid) => {
     await fetch(`http://localhost:3002/deletepost/${postid}`, {
       method: "delete",
@@ -147,7 +149,7 @@ const Home = () => {
       // .then(result=>console.log(result))
       .catch((err) => console.log(err));
   };
-  const deleteComment = async (id,commentId) => {
+  const deleteComment = async (id, commentId) => {
     await fetch(`http://localhost:3002/deletecomment/${id}/${commentId}`, {
       method: "delete",
       headers: {
@@ -156,27 +158,27 @@ const Home = () => {
       },
       body: JSON.stringify({
         id,
-        commentId
+        commentId,
       }),
     })
-    .then(alert("Comment Deleted Secceesfully !!"))
-    .then(window.location.reload())
-    // .then(result=>console.log(result))
-    .catch((err) => console.log(err));
+      .then(alert("Comment Deleted Secceesfully !!"))
+      .then(window.location.reload())
+      // .then(result=>console.log(result))
+      .catch((err) => console.log(err));
   };
   const localid = localStorage.getItem("_id");
   const localname = localStorage.getItem("name");
-// console.log(data.postedBy);
+  // console.log(data.postedBy);
   return (
     <>
-      <section className="w-full px-8 text-gray-700 bg-white">
+      <section className="w-full px-8 text-gray-700 bg-gray-900">
         <div className="container flex flex-col flex-wrap items-center justify-between py-5 mx-auto md:flex-row max-w-7xl">
           <div className="relative flex flex-col md:flex-row">
             <Link
               to="/"
               className="flex items-center mb-5 font-medium text-gray-900 lg:w-auto lg:items-center lg:justify-center md:mb-0"
             >
-              <span className="mx-auto text-xl font-black leading-none text-gray-900 select-none">
+              <span className="mx-auto text-xl font-black leading-none text-gray-400 select-none">
                 Quotes
                 <span className="text-indigo-600" data-primary="indigo-600">
                   .
@@ -191,7 +193,7 @@ const Home = () => {
 
               <Link
                 to={`/profile/${localid}`}
-                className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900"
+                className="mr-5  font-bold leading-6 text-yellow-600 hover:text-yellow-500"
               >
                 My Profile
               </Link>
@@ -207,7 +209,7 @@ const Home = () => {
             </Link> */}
             <Link
               to="/post"
-              className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-pink-500 border border-transparent rounded-md shadow-sm hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+              className="inline-flex items-center justify-center px-4 py-2 text-base font-semibold leading-6 text-slate-900 whitespace-no-wrap bg-yellow-600 border border-transparent rounded-md shadow-sm hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600"
               data-rounded="rounded-md"
               data-primary="indigo-600"
             >
@@ -215,7 +217,7 @@ const Home = () => {
             </Link>
             <Link
               to="/signin"
-              className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+              className="inline-flex items-center justify-center px-4 py-2 text-base font-extrabold leading-6 text-slate-900 whitespace-no-wrap bg-slate-400 border border-transparent rounded-md shadow-sm hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-600"
               data-rounded="rounded-md"
               data-primary="indigo-600"
               onClick={() => localStorage.removeItem("jwt")}
@@ -227,63 +229,113 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="m-4">
+      <div class="container p-2 bg-black mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 pt-6 gap-6">
         {data.map((item) => {
           return (
-            <ul key={item._id}>
-              <li>Name : <strong>{item.postedBy.name}</strong> </li>
-              {/* <li>prof url : {item.postedBy.pic}</li> */}
-              {/* <li>Name : {item._id}</li> */}
-              <li>User prof : <strong> {item.pic}</strong></li>
+            <div class="rounded-xl pl-2 overflow-scroll scrollbar-hide bg-gray-900 border-gray-700 border-2 h-[700px]">
+              {/* <div class="w-full h-4/5 overflow-auto border mt-5 border-gray-600 rounded-lg shadow-black shadow-lg hover:shadow-violet-600 hover:shadow-2xl"> */}
+              <div className=" bg-opacity-80 text-yellow-600 bg-gray-900 text-xl font-extrabold flex flex-row items-start justify-start  p-3">
+                <img
+                  class="h-9 w-9  rounded-full mr-2 cursor-pointer"
+                  src={`${item.pic}`}
+                  alt="img"
+                />
+                {item.postedBy.name} ( { item.branch ==='M' ? "♂︎" : "♀︎" } )
+                {item.postedBy._id === localid && (
+                  <button onClick={() => deletePost(item._id)}>
+                    <img
+                      className="h-6 w-6 ml-4 cursor-pointer"
+                      src="/images/del.png"
+                      alt="del"
+                    />
+                  </button>
+                )}
+                {/* <img className="h-6 w-6 ml-4 cursor-pointer"  src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png" alt="del" /> */}
+              </div>
 
-              <li>
-                cover url : <strong>{`${item.url}`}</strong>
-                
-              </li>
-              <li>Branch :{item.branch}</li>
-              <li>Qoute : {item.quote}</li>
-              <li>Created At : {item.createdAt}</li>
-              <li>Updated At : {item.updatedAt}</li>
-              {/* <li className="cursor-pointer " onClick={likePost(item._id)} > 👍🏻Like  </li>
-                <li  className="cursor-pointer " onClick={unlikePost(item._id)}> 👎🏻Unlike  </li> */}
-              {item.likes.includes(localid) ? (
-                <button onClick={() => unlikePost(item._id)}>Unlike</button>
-              ) : (
-                <button
-                  onClick={() => {
-                    likePost(item._id);
-                  }}
-                >
-                  Like
-                </button>
-              )}
-              <br />
-              {item.postedBy._id === localid && (
-                <button onClick={() => deletePost(item._id)}>delete </button>
-              )}
+              {/* <div className="flex flex-col max-h-screen overflow-scroll items-start justify-start pl-3 " > */}
+              <div className="flex flex-row pr-2 justify-center cursor-pointer">
+                <Link to="/">
+                  <img
+                    class="h-fit max-w-full rounded-lg cursor-pointer"
+                    src={item.url}
+                    alt="cover img"
+                  />
+                </Link>
+              </div>
 
-              <li>Likes : {item.likes.length}</li>
-              <strong>Comments :</strong>
-              <li>------</li>
-              {item.comments.map((record) => {
-                return (
-                  <h6 key={record._id}>
-                    <span>{record.postedBy.name}</span>
-                    {record.text}
-                    { record.postedBy.name ===localname && <button onClick={() => deleteComment(item._id,record._id)}>:::del</button> }
-                  </h6>
-                );
-              })}
-              <form
-                onSubmit={(e) => {
+              {/* <span className="text-xs font-extrabold m-3">
+      DS-A
+    </span> */}
+
+              <div className="text-sm font-bold p-3 border-b-gray-500  text-slate-400  border-b-[1px] ml-2 mr-2 ">
+                {item.quote}
+              </div>
+              <div>
+                <div className="grid grid-cols-2  border-2 border-b-gray-900 border-t-gray-900 border-l-gray-900 border-r-gray-900 border-b-2 mt-2 mr-2   ">
+                  <div className="min-h-[30px] pl-6 text-sm font-bold text-slate-400 pt-4 rounded-l-lg  bg-gray-900 ">
+                    {item.createdAt.substring(0,10)}
+                  </div>
+                  <div className="min-h-[30px] pl-32 bg-gray-900 rounded-r-lg ">
+                    {item.likes.includes(localid) ? (
+                      <button  onClick={() => unlikePost(item._id)}>
+                        <img
+                          className="w-8 h-8 opacity-90"
+                          src="/images/nl2.png"
+                          alt="likes"
+                        />
+                      </button>
+                    ) : (
+                      <button className="pr-2"
+                        onClick={() => {
+                          likePost(item._id);
+                        }}
+                      >
+                         <img
+                          className="w-10 h-8 opacity-90"
+                          src="/images/nul2.png"
+                          alt="likes"
+                        />
+                      </button>
+                    )}
+                    {/* <img  className="w-8 h-8 opacity-90" src="/images/likeimg.png" alt="likes" /> */}
+                    <div className="pl-[12px] font-semibold text-slate-400">
+                      {item.likes.length}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-lg pb-2 font-extrabold text-slate-300 underline">
+                Comments ({item.comments.length}) :{" "}
+              </div>
+
+              <span>
+                <form onSubmit={(e) => {
                   e.preventDefault();
                   makeComment(e.target[0].value, item._id);
-                }}
-              >
-                <input type="text" placeholder="add comment" />
-              </form>
-              <strong> Anonymous comments</strong>
-              {item.pcomments.map((record) => {
+                }} >
+                  <div class="relative mr-[14px]">
+                    <input
+                      type="search"
+                      id="search"
+                      class=" w-[253px]  p-4 pl-3 mb-2  text-sm font-semibold text-gray-200 border border-gray-300 rounded-lg bg-gray-200 bg-transparent placeholder-slate-400   "
+                      placeholder="Write a Comment..."
+                    />
+                    <button
+                      type="submit"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        makeComment(e.target[0].value, item._id);
+                      }}
+                      class="text-gray-200 absolute right-2.5 bottom-2.5 bg-yellow-600 hover:bg-yellow-700   font-extrabold rounded-lg text-3xl px-4 py-1  "
+                    >
+                      <img className="w-9 h-10" src="/images/sub.png" alt="Add" />
+                    </button>
+                  </div>
+                </form>
+              </span>
+              {/* {item.comments.map((record) => {
                 return (
                   <h6 key={record._id}>
                     <span>{record.postedBy.name}</span>
@@ -291,24 +343,41 @@ const Home = () => {
                     { record.postedBy.name ===localname && <button onClick={() => deleteComment(item._id,record._id)}>:::del</button> }
                   </h6>
                 );
+              })} */}
+              {item.comments.map((record) => {
+                return (
+                  <>
+                    <div className="text-sm pl-2 font-extrabold text-slate-300  underline ">
+                      ➤ {record.postedBy.name}
+                      
+                      {record.postedBy.name === localname && (
+                      <button className="mt-2 ml-2"
+                        onClick={() => deleteComment(item._id, record._id)}
+                      >
+                         <img
+                            className="h-5   w-5 "
+                            src="/images/del.png"
+                            alt="del"
+                          />
+                      </button>
+                    )}
+                      
+                    </div>
+                    <div className="text-sm text-slate-400  font-medium ml-7 ">
+                      {" "}
+                      {record.text}
+                    </div>
+                  </>
+                );
               })}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  makepComment(e.target[0].value, item._id);
-                }}
-              >
-                <input type="text" placeholder="add anonymous comments" />
-              </form>
-              <li>--------</li>
-              {/* <li>Qoute : {item.quote}</li> */}
-              <li>
-                ----------------------------------------------------------------
-              </li>
-            </ul>
+
+              {/* </div> */}
+              {/* <span className="text-xl font-extrabold flex flex-row items-start justify-start p-3">hi</span> */}
+            </div>
           );
         })}
       </div>
+      
     </>
   );
 };

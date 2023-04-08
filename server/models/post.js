@@ -9,7 +9,7 @@ const postSchema = new mongoose.Schema({
     },
     branch:{
         type: String,
-        default: "-",
+        
     },
      quote:{
         type: String,

@@ -32,7 +32,7 @@ router.post('/createpost',middleware, async(req,res)=>{
     try {
         const {url,pic,branch,quote} = req.body;
         // const exist = Post.find()
-        if(!quote || !branch){
+        if(!quote || !branch ){
             return res.status(422).json({message:"Please fill all fields.."})
         }
         // if(exist){
