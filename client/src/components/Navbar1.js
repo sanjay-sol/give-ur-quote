@@ -22,7 +22,8 @@ const Navbar1 = () => {
     <div className="container flex flex-col flex-wrap items-center justify-between py-5 mx-auto md:flex-row max-w-7xl">
         <div className="relative flex flex-col md:flex-row">
             <Link to="/" className="flex items-center mb-5 font-medium text-gray-900 lg:w-auto lg:items-center lg:justify-center md:mb-0">
-                <span className="mx-auto text-xl font-black leading-none text-gray-400 select-none">Quotes<span className="text-indigo-600" data-primary="indigo-600">.</span></span>
+            <span className="mx-auto ml-2 text-xl font-black leading-none text-gray-400  select-none">CVR<span className="text-indigo-600" data-primary="indigo-600"> <img className="w-16 h-9 rounded-lg mr-2" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBf8pOSlD20PmO3plmeIK9qspAmYe7YheFTBhVhoMi2yLPmDJz_Gk8owfQLePRop38Oei7gRhoRD-QYQXSnDp0ci-W7XM4yEVDrz5GCYfzNOf3v4kkfruUdUFXUqJL2AKPnsD5y1yHcjnuN41QiYYzOn4oYgIy6MUC34VktANtW-1_KMaMA6Lkc1fO/s2048/IMG_20230225_120158.png" alt="hood" /></span></span>
+
             </Link>
             <nav className="flex flex-wrap items-center mb-5 text-base md:mb-0 md:pl-8 md:ml-8 md:border-l md:border-gray-200">
                  {/* <Link to="/" className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Dashboard</Link> */}

@@ -53,6 +53,9 @@ router.post("/signup", async (req, res) => {
     });
     await user.save();
     res.status(200).json({ message: "Registerd Successfully !!" });
+    // const token = jwt.sign({_id:exist._id},process.env.JWT_SECRET)
+   
+    // res.json({token,_id:exist._id,email:exist.email,name:exist.name,pic:exist.pic})
   } catch (error) {
     console.log("error in register", error);
     return res.status(400).json({error:"Unable to add User"});
