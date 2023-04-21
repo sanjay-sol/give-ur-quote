@@ -68,7 +68,7 @@ const Post = () => {
     } ;
     const token = "Bearer "+localStorage.getItem("jwt")
     // console.log(token);
-    await axios.post('http://localhost:3002/createpost', post,{
+    await axios.post(`${process.env.BACKEND_API}/createpost`, post,{
         headers: {
           "Authorization": token,
         },

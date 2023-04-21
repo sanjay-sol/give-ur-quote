@@ -46,7 +46,7 @@ const Profile = () => {
   };
 
   const updateprofile = async () => {
-    await fetch(`http://localhost:3002/updateprofile/${params.id}`, {
+    await fetch(`${process.env.BACKEND_API}/updateprofile/${params.id}`, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3002/myprofile/${params.id}`, {
+      .get(`${process.env.BACKEND_API}/myprofile/${params.id}`, {
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },
@@ -78,7 +78,7 @@ const Profile = () => {
   });
   useEffect(() => {
     axios
-      .get("http://localhost:3002/myposts", {
+      .get(`${process.env.BACKEND_API}/myposts`, {
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },

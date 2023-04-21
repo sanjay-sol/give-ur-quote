@@ -15,7 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3002/allposts", {
+      .get(`${process.env.BACKEND_API}/allposts`, {
         headers: {
           Authorization: localStorage.getItem("jwt"),
         },
@@ -31,7 +31,7 @@ const Home = () => {
     // let newpostId = {
     //     postid:id
     // };
-    fetch("http://localhost:3002/like", {
+    fetch(`${process.env.BACKEND_API}/like`, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const Home = () => {
     // let newpostId = {
     //     postid:id
     // };
-    await fetch("http://localhost:3002/unlike", {
+    await fetch(`${process.env.BACKEND_API}/unlike`, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ const Home = () => {
   };
 
   const makeComment = async (text, postId) => {
-    await fetch("http://localhost:3002/comment", {
+    await fetch(`${process.env.BACKEND_API}/comment`, {
       method: "put",
       headers: {
         "Content-Type": "application/json",
@@ -112,7 +112,7 @@ const Home = () => {
   
   
   const deletePost = async (postid) => {
-    await fetch(`http://localhost:3002/deletepost/${postid}`, {
+    await fetch(`${process.env.BACKEND_API}/deletepost/${postid}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const Home = () => {
       .catch((err) => console.log(err));
   };
   const deleteComment = async (id, commentId) => {
-    await fetch(`http://localhost:3002/deletecomment/${id}/${commentId}`, {
+    await fetch(`${process.env.BACKEND_API}/deletecomment/${id}/${commentId}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",

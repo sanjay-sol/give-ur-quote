@@ -30,7 +30,7 @@ const SignUp = () => {
         alert("Invali Email") 
         return
     }
-    axios.post('http://localhost:3002/signup',user)
+    axios.post(`${process.env.BACKEND_API}/signup`,user)
     .then(res => {
         alert(res.data.message)
         setauth(true)

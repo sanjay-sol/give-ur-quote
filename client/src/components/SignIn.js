@@ -28,7 +28,7 @@ const SignIn = () => {
             alert("Invali Email") 
             return
         }
-        axios.post('http://localhost:3002/signin',user)
+        axios.post(`${process.env.BACKEND_API}/signin`,user)
         .then(res => {
             localStorage.setItem("jwt", res.data.token);
             localStorage.setItem("_id", res.data._id);
