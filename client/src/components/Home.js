@@ -108,32 +108,7 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
-  // const makepComment = async (text, postId) => {
-  //   await fetch("http://localhost:3002/pcomment", {
-  //     method: "put",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + localStorage.getItem("jwt"),
-  //     },
-  //     body: JSON.stringify({
-  //       postId,
-  //       text,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((updated) => {
-  //       console.log(updated);
-  //       const newData = data.map((item) => {
-  //         if (item._id === updated._id) {
-  //           return updated;
-  //         } else {
-  //           return item;
-  //         }
-  //       });
-  //       setdata(newData);
-  //     })
-  //     .catch((err) => console.log(err));
-  // };
+
   
   
   const deletePost = async (postid) => {
